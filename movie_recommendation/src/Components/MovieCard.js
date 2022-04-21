@@ -2,11 +2,12 @@ import { Card, CardMedia, Typography, Rating } from "@mui/material";
 
 function MovieCard({ width, posterPath, title, voteAverage }) {
   return (
-    <Card sx={{ margin: 1, width }}>
+    <Card sx={{ margin: 1, width, minWidth: 200, minHeight: 300 }}>
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
           src={"https://image.tmdb.org/t/p/w780" + posterPath}
+          height="%100"
         />
         <div style={styles.bottomBackground}>
           <Typography style={styles.text} variant="h7" gutterBottom>

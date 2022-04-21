@@ -38,27 +38,34 @@ function App() {
         </Typography>
       </header>
       <div className="App-content">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            minHeight: 200,
-            alignItems: "center",
-            justifyContent: "center",
+        <Typography
+          sx={{
+            color: "white",
+            borderBottom: 0.4,
+            borderColor: "white",
+            width: "80%",
+            textAlign: "left",
+            margin: "auto",
           }}
+          variant="h5"
         >
-          {results.slice(5, 10).map((result) => {
+          Recommendations Based On Your Likes
+        </Typography>
+        <div
+          className="App-recommendation"
+          style={{ flex: 1, width: "80%", padding: 10, margin: "auto" }}
+        >
+          {results.slice(0, 12).map((result) => {
             return (
-              <Box sx={{}}>
-                <MovieCard
-                  posterPath={result.poster_path}
-                  title={result.title}
-                  voteAverage={result.vote_average}
-                />{" "}
-              </Box>
+              <MovieCard
+                posterPath={result.poster_path}
+                title={result.title}
+                voteAverage={result.vote_average}
+              />
             );
           })}
         </div>
+
         <div className="App-movieSection">
           <Paper
             sx={{
