@@ -1,71 +1,58 @@
 import "./App.css";
-import React from "react";
-import { Paper, Typography, Grid, Button } from "@mui/material";
-import * as data from "./movies.json";
+import React, { useEffect, useState } from "react";
+import { Paper, Typography, TextField, Box, Grid } from "@mui/material";
+import * as movieData from "./movies.json";
+import * as genreData from "./genres.json";
 import MovieCard from "./Components/MovieCard";
-import { Box } from "@mui/system";
+import Header from "./Sections/Header";
+import Recommendations from "./Sections/Recommendations";
+import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@mui/material/InputAdornment";
+import FilterButton from "./Components/FilterButton";
 
-const { results } = data;
+const { results } = movieData;
+const { genres } = genreData;
 
 function App() {
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(results);
+
+  function newMovie() {
+    var newOnes = [];
+    results.map((movie) => {
+      movie.genre_ids.map((genre_id) => {
+        if (selectedGenres.includes(genre_id)) {
+          newOnes.push(movie);
+          return;
+        }
+      });
+    });
+  }
+
+  useEffect(() => {
+    if (selectedGenres.length === 0) {
+      setFilteredMovies(results);
+    } else {
+      setFilteredMovies(
+        results.filter((movie) => {
+          var includes = false;
+          movie.genre_ids.map((genre_id) => {
+            if (selectedGenres.includes(genre_id)) {
+              includes = true;
+            }
+            return;
+          });
+          return includes;
+        })
+      );
+    }
+  }, [selectedGenres, setSelectedGenres]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <Typography
-          gutterBottom
-          variant="h4"
-          style={{ textAlign: "left", paddingLeft: 10, flex: 5 }}
-        >
-          Movie Recommendation
-        </Typography>
-        <Typography
-          gutterBottom
-          style={{ textAlign: "left", paddingLeft: 10, flex: 1 }}
-        >
-          Login
-        </Typography>
-        <Typography
-          gutterBottom
-          style={{ textAlign: "left", paddingLeft: 10, flex: 1 }}
-        >
-          Sign-up
-        </Typography>
-        <Typography
-          gutterBottom
-          style={{ textAlign: "left", paddingLeft: 10, flex: 1 }}
-        >
-          Profile
-        </Typography>
-      </header>
+      <Header />
       <div className="App-content">
-        <Typography
-          sx={{
-            color: "white",
-            borderBottom: 0.4,
-            borderColor: "white",
-            width: "80%",
-            textAlign: "left",
-            margin: "auto",
-          }}
-          variant="h5"
-        >
-          Recommendations Based On Your Likes
-        </Typography>
-        <div
-          className="App-recommendation"
-          style={{ flex: 1, width: "80%", padding: 10, margin: "auto" }}
-        >
-          {results.slice(0, 12).map((result) => {
-            return (
-              <MovieCard
-                posterPath={result.poster_path}
-                title={result.title}
-                voteAverage={result.vote_average}
-              />
-            );
-          })}
-        </div>
-
+        <Recommendations results={results} />
         <div className="App-movieSection">
           <Paper
             sx={{
@@ -75,34 +62,82 @@ function App() {
               backgroundColor: "#212224",
             }}
           >
-            <Typography variant="h3" gutterBottom style={{ color: "white" }}>
-              Filtering Options goes here
+            <Typography variant="h5" gutterBottom style={{ color: "white" }}>
+              Filters
             </Typography>
+            <Grid container rowSpacing={1}>
+              {genres.map((genre) => {
+                return (
+                  <FilterButton
+                    id={genre.id}
+                    name={genre.name}
+                    onClick={setSelectedGenres}
+                  />
+                );
+              })}
+            </Grid>
           </Paper>
-          <Paper
+          <Box
             sx={{
               width: 1 / 2,
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-              marginTop: 5,
-              marginRight: 2,
-              marginLeft: 2,
               background:
                 "linear-gradient(#d91a1a, #b41c1c, #8f1d1e, #6b1f20, #462022, #212224)",
             }}
           >
-            {results.map((result) => {
-              return (
-                <MovieCard
-                  width={1 / 4}
-                  posterPath={result.poster_path}
-                  title={result.title}
-                  voteAverage={result.vote_average}
-                />
-              );
-            })}
-          </Paper>
+            <Box
+              sx={{
+                maxWidth: "80%",
+                alignItems: "center",
+                justifyContent: "center",
+                alignContent: "center",
+                margin: "auto",
+                marginTop: 2,
+              }}
+              autoComplete="off"
+              component="form"
+            >
+              <TextField
+                id="searchbar"
+                label="Search"
+                variant="outlined"
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ input: { color: "white" } }}
+              />
+            </Box>
+
+            <Paper
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-around",
+                marginTop: 5,
+                marginRight: 2,
+                marginLeft: 2,
+                background: "transparent",
+                border: 0,
+                minHeight: 500,
+              }}
+            >
+              {filteredMovies.map((result) => {
+                return (
+                  <MovieCard
+                    key={result.id}
+                    width={1 / 4}
+                    posterPath={result.poster_path}
+                    title={result.title ? result.title : result.name}
+                    voteAverage={result.vote_average}
+                  />
+                );
+              })}
+            </Paper>
+          </Box>
           <Paper
             sx={{
               width: 1 / 4,

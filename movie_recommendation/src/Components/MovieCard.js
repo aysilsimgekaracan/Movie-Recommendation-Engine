@@ -2,7 +2,15 @@ import { Card, CardMedia, Typography, Rating } from "@mui/material";
 
 function MovieCard({ width, posterPath, title, voteAverage }) {
   return (
-    <Card sx={{ margin: 1, width, minWidth: 200, minHeight: 300 }}>
+    <Card
+      sx={{
+        margin: 1,
+        width,
+        minWidth: 200,
+        minHeight: 300,
+        maxHeight: "min-content",
+      }}
+    >
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
