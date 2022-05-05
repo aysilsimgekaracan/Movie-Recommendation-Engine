@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { Paper, TextField, Box } from "@mui/material";
+import { Paper, Box } from "@mui/material";
 import MovieCard from "../Components/MovieCard";
-import SearchIcon from "@mui/icons-material/Search";
-import InputAdornment from "@mui/material/InputAdornment";
+import SearchBar from "../Components/SearchBar";
 
 function MovieList({
   filteredMovies,
@@ -32,6 +31,7 @@ function MovieList({
       );
     }
   }, [selectedGenres, setSelectedGenres, results, setFilteredMovies]);
+
   return (
     <Box
       sx={{
@@ -42,33 +42,7 @@ function MovieList({
         margin: 1,
       }}
     >
-      <Box
-        sx={{
-          maxWidth: "80%",
-          alignItems: "center",
-          justifyContent: "center",
-          alignContent: "center",
-          margin: "auto",
-          marginTop: 2,
-        }}
-        autoComplete="off"
-        component="form"
-      >
-        <TextField
-          id="searchbar"
-          label="Search"
-          variant="outlined"
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          sx={{ input: { color: "white" } }}
-        />
-      </Box>
+      <SearchBar />
 
       <Paper
         sx={{
@@ -83,6 +57,7 @@ function MovieList({
           minHeight: 500,
         }}
       >
+        {/* Filtered movies will be listed: */}
         {filteredMovies.map((result) => {
           return (
             <MovieCard
@@ -100,4 +75,4 @@ function MovieList({
   );
 }
 
-export default MovieList();
+export default MovieList;
