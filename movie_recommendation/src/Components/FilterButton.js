@@ -1,4 +1,4 @@
-import { Typography, Box } from "@mui/material";
+import { Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
 function FilterButton({ id, name, onClick }) {
@@ -10,17 +10,17 @@ function FilterButton({ id, name, onClick }) {
     } else {
       onClick((arr) => [...arr].filter((el) => el !== id));
     }
-  }, [isSelected, setIsSelected]);
+  }, [id, onClick, isSelected]);
 
   return (
     <button
+      key={id}
       onClick={() => setIsSelected(!isSelected)}
       style={{
         minWidth: 64,
         background: isSelected ? "grey" : "white",
         borderRadius: 10,
         margin: 0.5,
-        padding: 0.2,
         borderColor: "black",
         padding: 5,
       }}

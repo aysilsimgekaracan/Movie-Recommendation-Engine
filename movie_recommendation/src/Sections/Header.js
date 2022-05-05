@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
+import CustomButton from "../Components/CustomButton";
 
-function Header() {
+function Header({ setIsLoggedIn, isLoggedIn }) {
   return (
     <header className="App-header">
       <Typography
@@ -10,24 +11,17 @@ function Header() {
       >
         Movie Recommendation
       </Typography>
-      <Typography
-        gutterBottom
-        style={{ textAlign: "left", paddingLeft: 10, flex: 1 }}
-      >
-        Login
-      </Typography>
-      <Typography
-        gutterBottom
-        style={{ textAlign: "left", paddingLeft: 10, flex: 1 }}
-      >
-        Sign-up
-      </Typography>
-      <Typography
-        gutterBottom
-        style={{ textAlign: "left", paddingLeft: 10, flex: 1 }}
-      >
-        Profile
-      </Typography>
+      {isLoggedIn ? (
+        <>
+          <CustomButton title="Profile" />
+          <CustomButton title="Log Out" onClick={() => setIsLoggedIn(false)} />
+        </>
+      ) : (
+        <>
+          <CustomButton title="Login" onClick={() => setIsLoggedIn(true)} />
+          <CustomButton title="Sign-up" onClick={() => setIsLoggedIn(true)} />
+        </>
+      )}
     </header>
   );
 }

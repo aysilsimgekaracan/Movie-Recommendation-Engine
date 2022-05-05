@@ -1,29 +1,60 @@
-import { Card, CardMedia, Typography, Rating } from "@mui/material";
+import { Card, CardMedia, Typography, Rating, IconButton } from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import React, { useEffect, useState } from "react";
 
-function MovieCard({ width, posterPath, title, voteAverage }) {
+function MovieCard({
+  key,
+  width = 200,
+  setLikedMovies,
+  movie,
+  likedMovies,
+  isLikeButtonDisabled = false,
+}) {
+  const [isLiked, setIsLiked] = useState(
+    likedMovies.includes(movie) ? true : false
+  );
+
+  useEffect(() => {
+    if (isLiked) {
+      setLikedMovies((arr) => [...arr, movie]);
+    } else {
+      console.log("çok çalıştım");
+      setLikedMovies((arr) => [...arr].filter((el) => el.id !== movie.id));
+    }
+  }, [isLiked, movie, setLikedMovies]);
+
   return (
     <Card
+      key={key}
       sx={{
         margin: 1,
         width,
         minWidth: 200,
         minHeight: 300,
-        maxHeight: "min-content",
       }}
     >
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
-          src={"https://image.tmdb.org/t/p/w780" + posterPath}
+          src={"https://image.tmdb.org/t/p/w780" + movie.poster_path}
           height="%100"
         />
+        <IconButton
+          onClick={() => setIsLiked(!isLiked)}
+          style={{ position: "absolute", top: 2, right: 2 }}
+          aria-label="like movie"
+          color={isLiked ? "error" : "default"}
+          disabled={isLikeButtonDisabled}
+        >
+          <FavoriteIcon />
+        </IconButton>
         <div style={styles.bottomBackground}>
           <Typography style={styles.text} variant="h7" gutterBottom>
-            {title}
+            {movie.title ? movie.title : movie.name}
           </Typography>
           <Rating
             style={styles.rating}
-            value={voteAverage / 2}
+            value={movie.vote_average / 2}
             readOnly
             precision={0.5}
             size="small"
@@ -54,7 +85,6 @@ let styles = {
   rating: {
     borderWidth: 10,
     borderColor: "yellow",
-    right: 0,
     position: "absolute",
     bottom: 5,
     right: 5,

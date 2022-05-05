@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import MovieCard from "../Components/MovieCard";
 
-function Recommendations({ results }) {
+function Recommendations({ results, isLoggedIn, likedMovies, setLikedMovies }) {
   return (
     <div>
       <Typography
@@ -15,21 +15,40 @@ function Recommendations({ results }) {
         }}
         variant="h5"
       >
-        Recommendations Based On Your Likes
+        {isLoggedIn ? "Recommendations Based On Your Likes" : "Trend Movies"}
       </Typography>
       <div
         className="App-recommendation"
-        style={{ flex: 1, width: "80%", padding: 10, margin: "auto" }}
+        style={{
+          flex: 1,
+          width: "80%",
+          padding: 10,
+          margin: "auto",
+        }}
       >
-        {results.slice(0, 12).map((result) => {
-          return (
-            <MovieCard
-              posterPath={result.poster_path}
-              title={result.title}
-              voteAverage={result.vote_average}
-            />
-          );
-        })}
+        {isLoggedIn
+          ? results.slice(0, 2).map((result) => {
+              return (
+                <MovieCard
+                  key={result.id}
+                  movie={result}
+                  setLikedMovies={setLikedMovies}
+                  likedMovies={likedMovies}
+                  isLikeButtonDisabled={!isLoggedIn}
+                />
+              );
+            })
+          : results.slice(0, 12).map((result) => {
+              return (
+                <MovieCard
+                  key={result.id}
+                  movie={result}
+                  setLikedMovies={setLikedMovies}
+                  likedMovies={likedMovies}
+                  isLikeButtonDisabled={!isLoggedIn}
+                />
+              );
+            })}
       </div>
     </div>
   );
