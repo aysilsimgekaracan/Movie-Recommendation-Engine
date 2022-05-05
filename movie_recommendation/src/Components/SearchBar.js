@@ -4,18 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 function SearchBar() {
   return (
-    <Box
-      sx={{
-        maxWidth: "80%",
-        alignItems: "center",
-        justifyContent: "center",
-        alignContent: "center",
-        margin: "auto",
-        marginTop: 2,
-      }}
-      autoComplete="off"
-      component="form"
-    >
+    <Box sx={styles.mainBox} autoComplete="off" component="form">
       <TextField
         id="searchbar"
         label="Search"
@@ -33,5 +22,16 @@ function SearchBar() {
     </Box>
   );
 }
+
+let styles = {
+  mainBox: {
+    maxWidth: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    margin: "auto",
+    marginTop: 2,
+  },
+};
 
 export default SearchBar;

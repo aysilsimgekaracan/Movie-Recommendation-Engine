@@ -33,30 +33,10 @@ function MovieList({
   }, [selectedGenres, setSelectedGenres, results, setFilteredMovies]);
 
   return (
-    <Box
-      sx={{
-        width: 1 / 2,
-        background:
-          "linear-gradient(#d91a1a, #b41c1c, #8f1d1e, #6b1f20, #462022, #212224)",
-        borderRadius: 3,
-        margin: 1,
-      }}
-    >
+    <Box sx={styles.mainBoxSx}>
       <SearchBar />
 
-      <Paper
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around",
-          marginTop: 5,
-          marginRight: 2,
-          marginLeft: 2,
-          background: "transparent",
-          border: 0,
-          minHeight: 500,
-        }}
-      >
+      <Paper sx={styles.moviePaper}>
         {/* Filtered movies will be listed: */}
         {filteredMovies.map((result) => {
           return (
@@ -74,5 +54,26 @@ function MovieList({
     </Box>
   );
 }
+
+let styles = {
+  mainBoxSx: {
+    width: 1 / 2,
+    background:
+      "linear-gradient(#d91a1a, #b41c1c, #8f1d1e, #6b1f20, #462022, #212224)",
+    borderRadius: 3,
+    margin: 1,
+  },
+  moviePaper: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    marginTop: 5,
+    marginRight: 2,
+    marginLeft: 2,
+    background: "transparent",
+    border: 0,
+    minHeight: 500,
+  },
+};
 
 export default MovieList;

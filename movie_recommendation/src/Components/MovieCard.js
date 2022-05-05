@@ -18,21 +18,12 @@ function MovieCard({
     if (isLiked) {
       setLikedMovies((arr) => [...arr, movie]);
     } else {
-      console.log("çok çalıştım");
       setLikedMovies((arr) => [...arr].filter((el) => el.id !== movie.id));
     }
   }, [isLiked, movie, setLikedMovies]);
 
   return (
-    <Card
-      key={key}
-      sx={{
-        margin: 1,
-        width,
-        minWidth: 200,
-        minHeight: 300,
-      }}
-    >
+    <Card key={key} sx={[styles.mainCard, { width: width }]}>
       <div style={{ position: "relative" }}>
         <CardMedia
           component="img"
@@ -66,6 +57,11 @@ function MovieCard({
 }
 
 let styles = {
+  mainCard: {
+    margin: 1,
+    minWidth: 200,
+    minHeight: 300,
+  },
   bottomBackground: {
     position: "absolute",
     backgroundColor: "rgba(52, 52, 52, 0.6)",
