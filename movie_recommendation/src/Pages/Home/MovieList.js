@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Paper, Box } from "@mui/material";
-import MovieCard from "../Components/MovieCard";
-import SearchBar from "../Components/SearchBar";
+import MovieCard from "../../Components/MovieCard";
+import SearchBar from "../../Components/SearchBar";
 
 function MovieList({
   filteredMovies,

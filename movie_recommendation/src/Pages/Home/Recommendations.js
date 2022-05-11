@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import MovieCard from "../Components/MovieCard";
+import MovieCard from "../../Components/MovieCard";
 
 function Recommendations({ results, isLoggedIn, likedMovies, setLikedMovies }) {
   return (

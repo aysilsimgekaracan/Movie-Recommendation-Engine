@@ -1,4 +1,4 @@
-import FilterButton from "../Components/FilterButton";
+import FilterButton from "../../Components/FilterButton";
 import { Paper, Typography, Grid } from "@mui/material";
 
 function Filters({ genres, setSelectedGenres }) {

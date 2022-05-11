@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import CustomButton from "../Components/CustomButton";
+import CustomButton from "../../Components/CustomButton";
 
 function Header({ setIsLoggedIn, isLoggedIn }) {
   return (
