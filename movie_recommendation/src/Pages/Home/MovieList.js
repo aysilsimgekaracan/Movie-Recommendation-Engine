@@ -30,6 +30,7 @@ function MovieList({
         })
       );
     }
+    console.log(filteredMovies);
   }, [selectedGenres, setSelectedGenres, results, setFilteredMovies]);
 
   return (

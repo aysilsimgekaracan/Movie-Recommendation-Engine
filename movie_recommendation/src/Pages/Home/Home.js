@@ -1,5 +1,5 @@
 import "../../App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import * as movieData from "../../movies.json";
 import * as genreData from "../../genres.json";
 import Header from "./Header";
@@ -7,23 +7,25 @@ import Recommendations from "./Recommendations";
 import UsersLikes from "./UsersLikes";
 import Filters from "./Filters";
 import MovieList from "./MovieList";
+import { AuthContext } from "../../Auth";
 
 const { results } = movieData;
 const { genres } = genreData;
 
-function Home() {
+function Home({ history }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState(results);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [likedMovies, setLikedMovies] = useState([]);
 
-  useEffect(() => {
-    console.log("login/logout");
-  }, [isLoggedIn, setIsLoggedIn]);
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="App">
-      <Header setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
+      <Header
+        setIsLoggedIn={setIsLoggedIn}
+        isLoggedIn={currentUser ? true : false}
+      />
       <div className="App-content">
         <Recommendations
           results={results}

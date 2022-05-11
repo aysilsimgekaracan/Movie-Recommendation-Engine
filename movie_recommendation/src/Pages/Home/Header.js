@@ -1,8 +1,14 @@
 import { Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton";
 import app from "../../base";
+import { Navigate, Redirect, NavLink, useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 
 function Header({ setIsLoggedIn, isLoggedIn }) {
+  const auth = getAuth(app);
+
+  const navigate = useNavigate();
+
   return (
     <header className="App-header">
       <Typography
@@ -16,17 +22,16 @@ function Header({ setIsLoggedIn, isLoggedIn }) {
         <>
           <CustomButton title="Profile" />
           <CustomButton
-            title="Log Out"
+            title="Sign Out"
             onClick={() => {
-              setIsLoggedIn(false);
-              app.auth().signOut();
+              signOut(auth);
             }}
           />
         </>
       ) : (
         <>
-          <CustomButton title="Login" onClick={() => setIsLoggedIn(true)} />
-          <CustomButton title="Sign-up" onClick={() => setIsLoggedIn(true)} />
+          <CustomButton title="Login" onClick={() => navigate("login")} />
+          <CustomButton title="Sign Up" onClick={() => navigate("signup")} />
         </>
       )}
     </header>

@@ -6,6 +6,8 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const SignUp = ({ history }) => {
   const auth = getAuth(app);
 
+  let navigate = useNavigate();
+
   const handleSignUp = useCallback(
     async (event) => {
       event.preventDefault();
@@ -22,6 +24,7 @@ const SignUp = ({ history }) => {
 
   return (
     <div>
+      <button onClick={() => navigate("/")}>Go Back to Home Page</button>
       <h1>Sign up</h1>
       <form onSubmit={handleSignUp}>
         <label>
