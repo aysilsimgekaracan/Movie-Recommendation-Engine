@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton";
+import app from "../../base";
 
 function Header({ setIsLoggedIn, isLoggedIn }) {
   return (
@@ -14,7 +15,13 @@ function Header({ setIsLoggedIn, isLoggedIn }) {
       {isLoggedIn ? (
         <>
           <CustomButton title="Profile" />
-          <CustomButton title="Log Out" onClick={() => setIsLoggedIn(false)} />
+          <CustomButton
+            title="Log Out"
+            onClick={() => {
+              setIsLoggedIn(false);
+              app.auth().signOut();
+            }}
+          />
         </>
       ) : (
         <>

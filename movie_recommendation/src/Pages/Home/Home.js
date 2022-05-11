@@ -14,27 +14,8 @@ const { genres } = genreData;
 function Home() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState(results);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [likedMovies, setLikedMovies] = useState([]);
-
-  // useEffect(() => {
-  //   if (selectedGenres.length === 0) {
-  //     setFilteredMovies(results);
-  //   } else {
-  //     setFilteredMovies(
-  //       results.filter((movie) => {
-  //         var includes = false;
-  //         movie.genre_ids.map((genre_id) => {
-  //           if (selectedGenres.includes(genre_id)) {
-  //             includes = true;
-  //           }
-  //           return;
-  //         });
-  //         return includes;
-  //       })
-  //     );
-  //   }
-  // }, [selectedGenres, setSelectedGenres]);
 
   useEffect(() => {
     console.log("login/logout");
@@ -74,3 +55,41 @@ function Home() {
 }
 
 export default Home;
+
+// import React, { useCallback } from "react";
+// import app from "../../base";
+// import { getAuth, signOut } from "firebase/auth";
+
+// const Home = ({ history }) => {
+//   const auth = getAuth(app);
+
+//   const handleSignOut = useCallback(
+//     async (event) => {
+//       event.preventDefault();
+
+//       try {
+//         await signOut(auth)
+//           .then(() => {
+//             // Sign-out successful.
+//             alert("Sign-out successful");
+//           })
+//           .catch((error) => {
+//             // An error happened.
+//             alert(error);
+//           });
+//       } catch (error) {
+//         alert(error);
+//       }
+//     },
+//     [history]
+//   );
+
+//   return (
+//     <>
+//       <h1>Home</h1>
+//       <button onClick={handleSignOut}>Sign out</button>
+//     </>
+//   );
+// };
+
+// export default Home;
