@@ -13,7 +13,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/users" element={<Users />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
         </Routes>
@@ -27,11 +26,11 @@ function App() {
 // }
 
 function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
+  return (
+    <h2>
+      Movie Recommandation App Created by Zeynep Aslı Şahin, Ayşıl Simge Karacan
+    </h2>
+  );
 }
 
 export default App;

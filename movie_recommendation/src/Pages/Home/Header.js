@@ -4,7 +4,7 @@ import app from "../../base";
 import { Navigate, Redirect, NavLink, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 
-function Header({ setIsLoggedIn, isLoggedIn }) {
+function Header({ isLoggedIn }) {
   const auth = getAuth(app);
 
   const navigate = useNavigate();
@@ -24,7 +24,11 @@ function Header({ setIsLoggedIn, isLoggedIn }) {
           <CustomButton
             title="Sign Out"
             onClick={() => {
-              signOut(auth);
+              signOut(auth)
+                .then(alert("Successfully Signed-Out"))
+                .catch((error) => {
+                  alert(error.message);
+                });
             }}
           />
         </>

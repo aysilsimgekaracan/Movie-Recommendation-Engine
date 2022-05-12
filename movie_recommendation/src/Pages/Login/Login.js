@@ -3,6 +3,8 @@ import { Navigate, useNavigate } from "react-router";
 import app from "../../base";
 import { AuthContext } from "../../Auth";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import "./Login.css";
+import CustomButton from "../../Components/CustomButton";
 
 const Login = ({ history }) => {
   const auth = getAuth(app);
@@ -39,20 +41,33 @@ const Login = ({ history }) => {
   }
 
   return (
-    <div>
+    <div className="view">
       <button onClick={() => navigate("/")}>Go Back to Home Page</button>
-      <h1>Log in</h1>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit">Log in</button>
-      </form>
+      <div className="login-div">
+        <div className="login-form">
+          <h1 className="title">Login</h1>
+          <form onSubmit={handleLogin}>
+            <div className="input-container">
+              <label className="label-email">
+                Email
+                <input name="email" type="email" placeholder="Email" required />
+              </label>
+              <label className="label-passwd">
+                Password
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  required
+                />
+              </label>
+              <div className="button-container">
+                <input type="submit" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

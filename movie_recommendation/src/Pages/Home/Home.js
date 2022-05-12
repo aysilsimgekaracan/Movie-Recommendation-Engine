@@ -15,21 +15,17 @@ const { genres } = genreData;
 function Home({ history }) {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState(results);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [likedMovies, setLikedMovies] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
 
   return (
     <div className="App">
-      <Header
-        setIsLoggedIn={setIsLoggedIn}
-        isLoggedIn={currentUser ? true : false}
-      />
+      <Header isLoggedIn={currentUser ? true : false} />
       <div className="App-content">
         <Recommendations
           results={results}
-          isLoggedIn={isLoggedIn}
+          isLoggedIn={currentUser ? true : false}
           likedMovies={likedMovies}
           setLikedMovies={setLikedMovies}
         />
@@ -39,7 +35,7 @@ function Home({ history }) {
             filteredMovies={filteredMovies}
             likedMovies={likedMovies}
             setLikedMovies={setLikedMovies}
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={currentUser ? true : false}
             results={results}
             selectedGenres={selectedGenres}
             setSelectedGenres={setSelectedGenres}
@@ -48,7 +44,7 @@ function Home({ history }) {
           <UsersLikes
             likedMovies={likedMovies}
             setLikedMovies={setLikedMovies}
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={currentUser ? true : false}
           />
         </div>
       </div>

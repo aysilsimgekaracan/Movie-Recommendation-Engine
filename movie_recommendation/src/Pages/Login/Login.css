@@ -1,0 +1,87 @@
+.view {
+  gap: 20px;
+  height: 100vh;
+  background: linear-gradient(
+    to top,
+    #d91a1a,
+    #b41c1c,
+    #8f1d1e,
+    #6b1f20,
+    #462022,
+    #212224
+  );
+}
+
+input[type="email"],
+input[type="password"] {
+  height: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-left: 10px;
+}
+
+input[type="submit"] {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  background: #212224;
+  border: 1px solid #212224;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+input[type="submit"]:hover {
+  background: #462022;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-form {
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(to top, #8f1d1e, #b41c1c, #d91a1a);
+  width: 80vh;
+  height: 50vh;
+  justify-content: center;
+}
+
+.list-container {
+  display: flex;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.title {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.label-passwd,
+.label-email {
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px;
+}
