@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton";
-import app from "../../base";
+import { app } from "../../base";
 import { Navigate, Redirect, NavLink, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 

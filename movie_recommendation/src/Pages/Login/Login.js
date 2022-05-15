@@ -1,10 +1,9 @@
 import React, { useCallback, useContext } from "react";
 import { Navigate, useNavigate } from "react-router";
-import app from "../../base";
+import { app } from "../../base";
 import { AuthContext } from "../../Auth";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import "./Login.css";
-import CustomButton from "../../Components/CustomButton";
 
 const Login = ({ history }) => {
   const auth = getAuth(app);

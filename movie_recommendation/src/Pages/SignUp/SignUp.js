@@ -1,7 +1,14 @@
 import React, { useCallback } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import app from "../../base";
+import { app, db } from "../../base";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  getFirestore,
+  collection,
+  addDoc,
+} from "firebase/firestore";
 
 const SignUp = ({ history }) => {
   const auth = getAuth(app);
@@ -13,14 +20,32 @@ const SignUp = ({ history }) => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
-        await createUserWithEmailAndPassword(auth, email.value, password.value);
-        alert("Successfully added");
+        await createUserWithEmailAndPassword(auth, email.value, password.value)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            handleFirestore(user);
+            navigate("/");
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
       } catch (error) {
         alert(error);
       }
     },
     [history]
   );
+
+  const handleFirestore = async (user) => {
+    try {
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        likes: [],
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <div>
