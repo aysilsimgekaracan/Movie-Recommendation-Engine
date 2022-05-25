@@ -10,17 +10,17 @@ function MovieCard({
   likedMovies,
   isLikeButtonDisabled = false,
 }) {
-  const [isLiked, setIsLiked] = useState(
-    likedMovies.includes(movie) ? true : false
-  );
+  // const [isLiked, setIsLiked] = useState(
+  //   likedMovies.includes(movie) ? true : false
+  // );
 
-  useEffect(() => {
-    if (isLiked) {
-      setLikedMovies((arr) => [...arr, movie]);
-    } else {
-      setLikedMovies((arr) => [...arr].filter((el) => el.id !== movie.id));
-    }
-  }, [isLiked, movie, setLikedMovies]);
+  // useEffect(() => {
+  //   if (isLiked) {
+  //     setLikedMovies((arr) => [...arr, movie]);
+  //   } else {
+  //     setLikedMovies((arr) => [...arr].filter((el) => el.id !== movie.id));
+  //   }
+  // }, [isLiked, movie, setLikedMovies]);
 
   return (
     <Card key={key} sx={[styles.mainCard, { width: width }]}>
@@ -30,7 +30,7 @@ function MovieCard({
           src={"https://image.tmdb.org/t/p/w780" + movie.poster_path}
           height="%100"
         />
-        <IconButton
+        {/* <IconButton
           onClick={() => setIsLiked(!isLiked)}
           style={{ position: "absolute", top: 2, right: 2 }}
           aria-label="like movie"
@@ -38,7 +38,7 @@ function MovieCard({
           disabled={isLikeButtonDisabled}
         >
           <FavoriteIcon />
-        </IconButton>
+        </IconButton> */}
         <div style={styles.bottomBackground}>
           <Typography style={styles.text} variant="h7" gutterBottom>
             {movie.title ? movie.title : movie.name}
