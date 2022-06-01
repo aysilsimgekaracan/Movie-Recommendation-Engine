@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Paper, Box } from "@mui/material";
+import { Paper, Box, Button, Typography, Modal } from "@mui/material";
 import MovieCard from "../../Components/MovieCard";
 import SearchBar from "../../Components/SearchBar";
 import { ReactiveList, SearchBox } from "@appbaseio/reactivesearch";
