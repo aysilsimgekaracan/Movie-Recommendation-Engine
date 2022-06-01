@@ -2,13 +2,7 @@ import React, { useCallback } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { app, db } from "../../base";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  doc,
-  setDoc,
-  getFirestore,
-  collection,
-  addDoc,
-} from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const SignUp = ({ history }) => {
   const auth = getAuth(app);
