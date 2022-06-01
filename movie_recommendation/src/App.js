@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { AuthProvider } from "./Auth";
 import SignUp from "./Pages/SignUp/SignUp";
 import Login from "./Pages/Login/Login";
+
 import Home from "./Pages/Home/Home";
 
 function App() {
@@ -17,6 +12,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
         </Routes>
@@ -29,21 +25,11 @@ function App() {
 //   return <h2>Home</h2>;
 // }
 
-function AMovie() {
+function About() {
   return (
     <h2>
       Movie Recommandation App Created by Zeynep Aslı Şahin, Ayşıl Simge Karacan
     </h2>
-  );
-}
-
-function MovieDetail() {
-  let { id } = useParams();
-
-  return (
-    <div>
-      <h3>ID: {id}</h3>
-    </div>
   );
 }
 
