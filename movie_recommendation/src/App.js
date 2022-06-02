@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,7 +13,14 @@ import Login from "./Pages/Login/Login";
 // Firebase() Imports
 import { useCallback, useContext } from "react";
 import { db } from "./base";
-import { doc, setDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
+  getDoc,
+} from "firebase/firestore";
 import { AuthContext } from "./Auth";
 
 import Home from "./Pages/Home/Home";
@@ -48,39 +55,65 @@ function AMovie() {
 function Firebase({ history }) {
   const { currentUser } = useContext(AuthContext);
 
-  const handleLike = useCallback(
-    async (uid, movieId) => {
-      try {
-        await setDoc(
-          doc(db, "users", uid),
-          {
-            likes: arrayUnion(movieId),
-          },
-          { merge: true }
-        );
-      } catch (error) {
-        alert(error);
-      }
-    },
-    [history]
-  );
+  const [likedMovies, setLikedMovies] = useState();
 
-  const handleDislike = useCallback(
-    async (uid, movieId) => {
-      try {
-        await setDoc(
-          doc(db, "users", uid),
-          {
-            likes: arrayRemove(movieId),
-          },
-          { merge: true }
-        );
-      } catch (error) {
-        alert(error);
-      }
-    },
-    [history]
-  );
+  // const docRef = doc(db, "cities", "SF");
+
+  // const getLikes = useCallback(async (uid) => {
+  //   try {
+  //     const docSnap = await getDoc(doc(db, "users", uid));
+  //     if (docSnap.exists()) {
+  //       console.log("Document data:", docSnap.data());
+  //     } else {
+  //       // doc.data() will be undefined in this case
+  //       console.log("No such document!");
+  //     }
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  // });
+
+  const handleLike = useCallback(async (uid, movieId) => {
+    try {
+      await setDoc(
+        doc(db, "users", uid),
+        {
+          likes: arrayUnion(movieId),
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      alert(error);
+    }
+  });
+
+  const handleDislike = useCallback(async (uid, movieId) => {
+    try {
+      await setDoc(
+        doc(db, "users", uid),
+        {
+          likes: arrayRemove(movieId),
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      alert(error);
+    }
+  });
+
+  const handleListener = useCallback(async (uid) => {
+    try {
+      onSnapshot(doc(db, "users", uid), (doc) => {
+        console.log(doc.data());
+      });
+    } catch (error) {
+      alert(error);
+    }
+  });
+
+  // const unsub = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
+  //   console.log(doc.data());
+  // });
 
   return (
     <div>
@@ -106,6 +139,8 @@ function Firebase({ history }) {
           <button onClick={() => handleDislike(currentUser.uid, "003")}>
             Dislike movie id 003
           </button>
+
+          {console.log(handleListener(currentUser.uid))}
         </div>
       )}
     </div>

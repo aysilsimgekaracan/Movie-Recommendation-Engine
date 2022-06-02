@@ -62,11 +62,7 @@ function Home({ history }) {
               setSelectedGenres={setSelectedGenres}
               setFilteredMovies={setFilteredMovies}
             />
-            {/* <UsersLikes
-              likedMovies={likedMovies}
-              setLikedMovies={setLikedMovies}
-              isLoggedIn={currentUser ? true : false}
-            /> */}
+            <UsersLikes currentUser={currentUser} />
           </div>
         </ReactiveBase>
       </div>
