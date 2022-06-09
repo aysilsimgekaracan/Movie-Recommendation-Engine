@@ -33,7 +33,10 @@ function Header({ isLoggedIn }) {
 
       {isLoggedIn ? (
         <>
-          <CustomButton title="Your Page" />
+          <CustomButton
+            title="Your Page"
+            onClick={() => navigate("your_page")}
+          />
           <CustomButton
             title="Sign Out"
             onClick={() => {

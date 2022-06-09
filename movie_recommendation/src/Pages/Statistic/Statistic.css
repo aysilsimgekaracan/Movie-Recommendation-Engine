@@ -1,0 +1,34 @@
+.main-div {
+  height: 100vh;
+  background: linear-gradient(
+    to top,
+    #d91a1a,
+    #b41c1c,
+    #8f1d1e,
+    #6b1f20,
+    #462022,
+    #212224
+  );
+  color: white;
+}
+
+.container {
+  background: #212224;
+  color: white;
+  max-height: 700px;
+}
+.navigate-back {
+  background-color: #555555;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.secondary-div {
+  align-items: center;
+}
