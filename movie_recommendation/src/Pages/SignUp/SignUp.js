@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { app, db } from "../../base";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import "./SignUp.css";
 
 const SignUp = ({ history }) => {
   const auth = getAuth(app);
@@ -42,20 +43,35 @@ const SignUp = ({ history }) => {
   };
 
   return (
-    <div>
-      <button onClick={() => navigate("/")}>Go Back to Home Page</button>
-      <h1>Sign up</h1>
-      <form onSubmit={handleSignUp}>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit">Sign Up</button>
-      </form>
+    <div className="view">
+      <button className="navigate-back" onClick={() => navigate("/")}>
+        Go Back to Home Page
+      </button>
+      <div className="signup-div">
+        <div className="signup-form">
+          <h1 className="title">Sign up</h1>
+          <form onSubmit={handleSignUp}>
+            <div className="input-container">
+              <label className="label-email">
+                Email
+                <input name="email" type="email" placeholder="Email" required />
+              </label>
+              <label className="label-passwd">
+                Password
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Password"
+                  required
+                />
+              </label>
+            </div>
+            <div className="button-container">
+              <button type="submit">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

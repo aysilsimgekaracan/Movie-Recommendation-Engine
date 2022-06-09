@@ -1,8 +1,9 @@
-import { Typography } from "@mui/material";
 import CustomButton from "../../Components/CustomButton";
 import { app } from "../../base";
-import { Navigate, Redirect, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+import "@fontsource/poiret-one";
+import { MovieFilter } from "@mui/icons-material";
 
 function Header({ isLoggedIn }) {
   const auth = getAuth(app);
@@ -11,13 +12,25 @@ function Header({ isLoggedIn }) {
 
   return (
     <header className="App-header">
-      <Typography
-        gutterBottom
-        variant="h4"
-        style={{ textAlign: "left", paddingLeft: 10, flex: 5 }}
+      <div
+        style={{
+          marginLeft: 10,
+          flex: 5,
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
       >
-        Movie Recommendation
-      </Typography>
+        <MovieFilter sx={{ fontSize: 50 }} />
+
+        <h1
+          className="title"
+          style={{ fontFamily: "Poriret One", fontSize: 50 }}
+        >
+          Moviewise
+        </h1>
+      </div>
+
       {isLoggedIn ? (
         <>
           <CustomButton title="Profile" />

@@ -3,45 +3,100 @@ import {
   CardMedia,
   Typography,
   Rating,
-  IconButton,
   ButtonBase,
   Box,
   Modal,
   Button,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import React, { useContext, useState } from "react";
-import MovieDetailModal from "./MovieDetailModal";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { AuthContext } from "../Auth";
+import {
+  doc,
+  setDoc,
+  arrayUnion,
+  arrayRemove,
+  onSnapshot,
+} from "firebase/firestore";
+import { db } from "../base";
 
 function MovieCard({
   key,
   width = 200,
-  setLikedMovies,
   movie,
-  likedMovies,
-  isLikeButtonDisabled = false,
+  customMinHeight = 200,
+  genres = [],
 }) {
-  // const [isLiked, setIsLiked] = useState(
-  //   likedMovies.includes(movie) ? true : false
-  // );
-
-  // useEffect(() => {
-  //   if (isLiked) {
-  //     setLikedMovies((arr) => [...arr, movie]);
-  //   } else {
-  //     setLikedMovies((arr) => [...arr].filter((el) => el.id !== movie.id));
-  //   }
-  // }, [isLiked, movie, setLikedMovies]);
-
   const { currentUser } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // Seçilen film likelanmış mı
+  const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      const unsubhandleListener = onSnapshot(
+        doc(db, "users", currentUser.uid),
+        (doc) => {
+          if (doc.data().likes.includes(movie.id)) {
+            setIsLiked(true);
+          } else {
+            setIsLiked(false);
+          }
+          // console.log(doc.data().likes);
+        }
+      );
+
+      return unsubhandleListener;
+    }
+  }, [currentUser, setIsLiked]);
+
+  const likeButonClicked = () => {
+    if (isLiked) {
+      // dislike the movie
+      handleDislike(currentUser.uid, movie.id);
+    } else {
+      // like the movie
+      handleLike(currentUser.uid, movie.id);
+    }
+  };
+
+  const handleLike = useCallback(async (uid, movieId) => {
+    try {
+      await setDoc(
+        doc(db, "users", uid),
+        {
+          likes: arrayUnion(movieId),
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      alert(error);
+    }
+  });
+
+  const handleDislike = useCallback(async (uid, movieId) => {
+    try {
+      await setDoc(
+        doc(db, "users", uid),
+        {
+          likes: arrayRemove(movieId),
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      alert(error);
+    }
+  });
+
   return (
-    <Card key={key} sx={[styles.mainCard, { width: width }]}>
+    <Card
+      key={key}
+      sx={[styles.mainCard, { width: width, minWidth: customMinHeight }]}
+    >
       <div>
         {/* <Button onClick={handleOpen}>Open modal</Button> */}
         <Modal
@@ -56,7 +111,7 @@ function MovieCard({
               {movie.title ? movie.title : movie.name}
             </Typography>
             <Box sx={styles.modalContentBox}>
-              {/* Right Side */}
+              {/* Left Side */}
               <Box sx={{ marginRight: 5 }}>
                 <CardMedia
                   component="img"
@@ -65,6 +120,9 @@ function MovieCard({
                 />
                 <Typography sx={{ mt: 2 }}>
                   Release Date: {movie.release_date}
+                </Typography>
+                <Typography sx={{ mt: 1 }}>
+                  Genres: {genres.join(" ")}
                 </Typography>
 
                 <Rating
@@ -78,12 +136,13 @@ function MovieCard({
                   variant="contained"
                   endIcon={<FavoriteIcon />}
                   disabled={!currentUser}
+                  onClick={likeButonClicked}
                 >
-                  {currentUser ? "Like" : "Please Login"}
+                  {currentUser ? (isLiked ? "Unlike" : "Like") : "Please Login"}
                 </Button>
               </Box>
 
-              {/* Left Side */}
+              {/* Right Side */}
               <Box>
                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                   {movie.overview}
@@ -94,27 +153,13 @@ function MovieCard({
         </Modal>
       </div>
 
-      {/* <MovieDetailModal
-        movie={movie}
-        open={isOpen}
-        onClose={setIsOpen(false)}
-      /> */}
       <ButtonBase onClick={handleOpen}>
         <div style={{ position: "relative" }}>
           <CardMedia
             component="img"
             src={"https://image.tmdb.org/t/p/w780" + movie.poster_path}
-            height="%100"
+            width="100%"
           />
-          {/* <IconButton
-          onClick={() => setIsLiked(!isLiked)}
-          style={{ position: "absolute", top: 2, right: 2 }}
-          aria-label="like movie"
-          color={isLiked ? "error" : "default"}
-          disabled={isLikeButtonDisabled}
-        >
-          <FavoriteIcon />
-        </IconButton> */}
           <div style={styles.bottomBackground}>
             <Typography style={styles.text} variant="h7" gutterBottom>
               {movie.title ? movie.title : movie.name}
@@ -136,8 +181,7 @@ function MovieCard({
 let styles = {
   mainCard: {
     margin: 1,
-    minWidth: 200,
-    minHeight: 300,
+    minHeight: 200,
   },
   bottomBackground: {
     position: "absolute",

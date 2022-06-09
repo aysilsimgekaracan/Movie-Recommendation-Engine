@@ -27,7 +27,7 @@ function SearchBar() {
         size: 3,
         minChars: 4,
       }}
-      index="movies-demo-app"
+      index="es-movie-recommendation"
       size={10}
       innerClass={{ list: "list-class" }}
     />

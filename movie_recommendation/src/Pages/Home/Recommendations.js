@@ -1,22 +1,224 @@
 import { Typography } from "@mui/material";
 import MovieCard from "../../Components/MovieCard";
+import { useEffect, useState } from "react";
+import { db } from "../../base";
+import { doc, onSnapshot } from "firebase/firestore";
+import { maxWidth } from "@mui/system";
 
-function Recommendations({ results, isLoggedIn, likedMovies, setLikedMovies }) {
+const axios = require("axios").default;
+
+function Recommendations({ results, currentUser }) {
+  const [films, setFilms] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);
+  const [likedGenres, setLikedGenres] = useState([]);
+
+  useEffect(() => {
+    if (likedGenres.length > 0) {
+      let length = likedGenres.length;
+      const counts = {};
+      likedGenres.forEach((element) => {
+        counts[element] = (counts[element] || 0) + 1;
+      });
+
+      console.log(counts);
+      const weights = {};
+      for (let key in counts) {
+        weights[key] = Math.floor((counts[key] / length) * 10);
+      }
+
+      console.log(weights);
+      generateNewRecommendations(weights);
+    }
+  }, [likedGenres]);
+
+  const generateNewRecommendations = (weights) => {
+    // Request Query Data
+    let functions = [];
+
+    for (let key in weights) {
+      var element = {};
+
+      element["filter"] = {
+        match_phrase: {
+          genres: key,
+        },
+      };
+
+      element["random_score"] = {
+        seed: Math.random * 10000,
+        field: "_seq_no",
+      };
+      element["weight"] = weights[key];
+
+      functions.push(element);
+    }
+
+    const len = (weights) => Object.values(weights).reduce((a, b) => a + b);
+
+    var data = JSON.stringify({
+      size: len(weights),
+      query: {
+        function_score: {
+          query: { match_all: {} },
+          functions: functions,
+        },
+      },
+    });
+
+    var config = {
+      method: "post",
+      url: process.env.REACT_APP_APPBASE_ES_URL + "/_doc/_search",
+      headers: {
+        "content-type": "application/json",
+        Authorization: process.env.REACT_APP_APPBASE_AUTHORIZATION,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        setFilms(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // Return genres of a movie by ID or it can be a list of ids
+  const getGenresFromAnId = (idList) => {
+    var shouldData = [];
+
+    for (let i in idList) {
+      shouldData.push({
+        match: {
+          id: parseInt(idList[i]),
+        },
+      });
+    }
+
+    var data = JSON.stringify({
+      query: {
+        bool: {
+          should: shouldData,
+        },
+      },
+    });
+
+    var config = {
+      method: "post",
+      url: process.env.REACT_APP_APPBASE_ES_URL + "/_doc/_search",
+      headers: {
+        "content-type": "application/json",
+        Authorization: process.env.REACT_APP_APPBASE_AUTHORIZATION,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        var genres = [];
+        for (var i = 0; i < response.data.hits.hits.length; i++) {
+          let genresOfAFilm = response.data.hits.hits[i]._source.genres;
+          genres.push(...genresOfAFilm);
+        }
+
+        setLikedGenres(genres);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // If there is no user authenticated, return 10 random movie
+  const loadRandomMovies = () => {
+    // Get 10 random movies
+    var data = JSON.stringify({
+      size: 10,
+      query: {
+        function_score: {
+          random_score: {
+            seed: Math.random * 1000000,
+            field: "_seq_no",
+          },
+        },
+      },
+    });
+
+    var config = {
+      method: "post",
+      url: process.env.REACT_APP_APPBASE_ES_URL + "/_doc/_search",
+      headers: {
+        "content-type": "application/json",
+        Authorization: process.env.REACT_APP_APPBASE_AUTHORIZATION,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        setFilms(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (!currentUser) {
+      // List Random Movies
+      loadRandomMovies();
+    }
+  }, [currentUser]);
+
+  // Get liked movies by a user in realtime
+  useEffect(() => {
+    if (currentUser) {
+      const unsubhandleListener = onSnapshot(
+        doc(db, "users", currentUser.uid),
+        (doc) => {
+          setLikedMovies(doc.data().likes);
+
+          if (!doc.data().likes) {
+            loadRandomMovies();
+          }
+        }
+      );
+
+      return unsubhandleListener;
+    }
+  }, [currentUser, setLikedMovies]);
+
+  useEffect(() => {
+    // If a user is authenticated, genreate random recommendations
+    if (currentUser && likedMovies.length > 0) {
+      getGenresFromAnId(likedMovies); // If likes have changed, calculate the recommendations again.
+    }
+  }, [currentUser, likedMovies]);
+
+  useEffect(() => {
+    if (currentUser && likedMovies.length == 0) {
+      setLikedGenres([]);
+    }
+  }, [likedMovies, currentUser, setLikedGenres]);
+
   return (
-    <div>
+    <div style={{ width: maxWidth }}>
       <Typography sx={styles.title} variant="h5">
-        {isLoggedIn ? "Recommendations Based On Your Likes" : "Trend Movies"}
+        {currentUser
+          ? likedGenres.length > 0
+            ? "Recommendations Based On Your Likes"
+            : "Random Movies - Like Something!"
+          : "Random Movies"}
       </Typography>
       <div className="App-recommendation" style={styles.recommendationDiv}>
-        {isLoggedIn
-          ? results.slice(0, 2).map((result) => {
+        {films !== [] && films.hits != undefined
+          ? films.hits.hits.map((result) => {
               return (
                 <MovieCard
-                  key={result.id}
-                  movie={result}
-                  setLikedMovies={setLikedMovies}
-                  likedMovies={likedMovies}
-                  isLikeButtonDisabled={!isLoggedIn}
+                  key={result._source.id}
+                  movie={result._source}
+                  customMinHeight={260}
+                  genres={result._source.genres}
                 />
               );
             })
@@ -25,9 +227,8 @@ function Recommendations({ results, isLoggedIn, likedMovies, setLikedMovies }) {
                 <MovieCard
                   key={result.id}
                   movie={result}
-                  setLikedMovies={setLikedMovies}
-                  likedMovies={likedMovies}
-                  isLikeButtonDisabled={!isLoggedIn}
+                  customMinHeight={260}
+                  genres={result.genres}
                 />
               );
             })}
@@ -48,7 +249,6 @@ let styles = {
   recommendationDiv: {
     flex: 1,
     width: "80%",
-    padding: 10,
     margin: "auto",
   },
 };

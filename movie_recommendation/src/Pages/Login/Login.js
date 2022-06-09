@@ -36,12 +36,15 @@ const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
+    // If already signed in return to "/"
     return <Navigate to="/" />;
   }
 
   return (
     <div className="view">
-      <button onClick={() => navigate("/")}>Go Back to Home Page</button>
+      <button className="navigate-back" onClick={() => navigate("/")}>
+        Go Back to Home Page
+      </button>
       <div className="login-div">
         <div className="login-form">
           <h1 className="title">Login</h1>
@@ -60,9 +63,9 @@ const Login = ({ history }) => {
                   required
                 />
               </label>
-              <div className="button-container">
-                <input type="submit" />
-              </div>
+            </div>
+            <div className="button-container">
+              <input type="submit" />
             </div>
           </form>
         </div>

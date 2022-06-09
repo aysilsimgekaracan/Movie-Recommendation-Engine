@@ -1,8 +1,8 @@
 import FilterButton from "../../Components/FilterButton";
 import { Paper, Typography, Grid } from "@mui/material";
-import { MultiList } from "@appbaseio/reactivesearch";
+import { MultiList, RangeSlider } from "@appbaseio/reactivesearch";
 
-function Filters({ genres, setSelectedGenres }) {
+function Filters() {
   return (
     <Paper sx={styles.mainPaper}>
       <Typography
@@ -15,26 +15,12 @@ function Filters({ genres, setSelectedGenres }) {
       </Typography>
 
       <MultiList
-        componentId="genres-list"
+        componentId="list-1"
         dataField="genres.keyword"
-        className="genres-filter"
-        size={20}
-        sortBy="asc"
-        queryFormat="or"
-        selectAllLabel="All Genres"
-        showCheckbox={true}
-        showCount={true}
-        showSearch={true}
-        placeholder="Search for a Genre"
-        react={{
-          and: ["mainSearch", "results"],
-        }}
-        showFilter={true}
-        filterLabel="Genre"
-        URLParams={false}
-        innerClass={{
-          label: "list-item",
-          input: "list-input",
+        size={100}
+        style={{
+          marginBottom: 20,
+          color: "white",
         }}
       />
     </Paper>

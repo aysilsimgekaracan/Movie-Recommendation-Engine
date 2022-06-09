@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -34,6 +34,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/firebase" element={<Firebase />} />
+          <Route path="/recommend" element={<Recommend />} />
         </Routes>
       </Router>
     </AuthProvider>
@@ -44,11 +45,38 @@ function App() {
 //   return <h2>Home</h2>;
 // }
 
-function AMovie() {
+function Recommend() {
+  const { currentUser } = useContext(AuthContext);
+  const [likedMovies, setLikedMovies] = useState([]);
+
+  useEffect(() => {
+    if (currentUser) {
+      const unsubhandleListener = onSnapshot(
+        doc(db, "users", currentUser.uid),
+        (doc) => {
+          setLikedMovies(doc.data().likes);
+        }
+      );
+
+      return unsubhandleListener;
+    }
+  }, [currentUser, setLikedMovies]);
+
   return (
-    <h2>
-      Movie Recommandation App Created by Zeynep Aslı Şahin, Ayşıl Simge Karacan
-    </h2>
+    <div>
+      {currentUser ? (
+        <div>
+          <h1>Giriş yapıldı: {currentUser.uid}</h1>
+          {likedMovies.length > 0 ? (
+            <h1>Liked something</h1>
+          ) : (
+            <h1>Didn't liked anything</h1>
+          )}
+        </div>
+      ) : (
+        <h1>Giriş Yapılmamış</h1>
+      )}
+    </div>
   );
 }
 

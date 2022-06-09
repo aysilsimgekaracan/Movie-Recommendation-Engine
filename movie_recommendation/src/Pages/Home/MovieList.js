@@ -1,45 +1,14 @@
-import React, { useEffect } from "react";
-import { Paper, Box, Button, Typography, Modal } from "@mui/material";
+import React from "react";
+import { Box } from "@mui/material";
 import MovieCard from "../../Components/MovieCard";
-import SearchBar from "../../Components/SearchBar";
 import { ReactiveList, SearchBox } from "@appbaseio/reactivesearch";
 
-function MovieList({
-  filteredMovies,
-  likedMovies,
-  setLikedMovies,
-  isLoggedIn,
-  results,
-  selectedGenres,
-  setSelectedGenres,
-  setFilteredMovies,
-}) {
-  useEffect(() => {
-    if (selectedGenres.length === 0) {
-      setFilteredMovies(results);
-    } else {
-      setFilteredMovies(
-        results.filter((movie) => {
-          var includes = false;
-          movie.genre_ids.map((genre_id) => {
-            if (selectedGenres.includes(genre_id)) {
-              includes = true;
-            }
-            return;
-          });
-          return includes;
-        })
-      );
-    }
-    console.log(filteredMovies);
-  }, [selectedGenres, setSelectedGenres, results, setFilteredMovies]);
-
+function MovieList() {
   return (
     <Box sx={styles.mainBoxSx}>
       <SearchBox
         componentId="mainSearch"
         dataField={["original_title", "original_title.search"]}
-        categoryField="genres.keyword"
         className="search-bar"
         queryFormat="and"
         placeholder="Search for movies..."
@@ -58,9 +27,16 @@ function MovieList({
           size: 3,
           minChars: 4,
         }}
-        index="movies-demo-app"
+        index="es-movie-recommendation"
         size={10}
         innerClass={{ list: "list-class" }}
+        style={{
+          marginBottom: 10,
+          marginTop: 10,
+          color: "black",
+          width: "90%",
+          marginLeft: "5%",
+        }}
       />
       <ReactiveList
         defaultQuery={() => ({ track_total_hits: true })}
@@ -70,15 +46,36 @@ function MovieList({
           { field: "original_title.search", weight: 2 },
         ]}
         react={{
-          and: ["mainSearch", "genres-list"],
+          and: ["mainSearch", "list-1"],
         }}
         pagination={true}
         className="Result_card"
-        paginationAt="bottom"
         pages={5}
         size={12}
         Loader="Loading..."
         noResults="No results were found..."
+        sortOptions={[
+          {
+            dataField: "vote_count",
+            sortBy: "desc",
+            label: "Sort by vote-count(High to Low) \u00A0",
+          },
+          {
+            dataField: "popularity",
+            sortBy: "desc",
+            label: "Sort by Popularity(High to Low)\u00A0 \u00A0",
+          },
+          {
+            dataField: "vote_average",
+            sortBy: "desc",
+            label: "Sort by Ratings(High to Low) \u00A0",
+          },
+          {
+            dataField: "original_title.keyword",
+            sortBy: "asc",
+            label: "Sort by Title(A-Z) \u00A0",
+          },
+        ]}
         innerClass={{
           title: "result-title",
           listItem: "result-item",
@@ -92,33 +89,11 @@ function MovieList({
         {({ data }) => (
           <ReactiveList.ResultCardsWrapper style={{ margin: "8px 0 0" }}>
             {data.map((item) => (
-              <MovieCard
-                key={item.id}
-                movie={item}
-                // width={1 / 4}
-                likedMovies={likedMovies}
-              />
+              <MovieCard key={item.id} movie={item} genres={item.genres} />
             ))}
           </ReactiveList.ResultCardsWrapper>
         )}
       </ReactiveList>
-
-      {/* <SearchBar />
-
-      <Paper sx={styles.moviePaper}>
-        {filteredMovies.map((result) => {
-          return (
-            <MovieCard
-              key={result.id}
-              movie={result}
-              width={1 / 4}
-              likedMovies={likedMovies}
-              setLikedMovies={setLikedMovies}
-              isLikeButtonDisabled={!isLoggedIn}
-            />
-          );
-        })}
-      </Paper> */}
     </Box>
   );
 }
