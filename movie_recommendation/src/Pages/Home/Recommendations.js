@@ -59,7 +59,7 @@ function Recommendations({ results, currentUser }) {
       size: len(weights),
       query: {
         function_score: {
-          query: { match_all: {} },
+          query: { match: { adult: false } },
           functions: functions,
         },
       },
@@ -136,6 +136,7 @@ function Recommendations({ results, currentUser }) {
       size: 10,
       query: {
         function_score: {
+          query: { match: { adult: false } },
           random_score: {
             seed: Math.random * 1000000,
             field: "_seq_no",
@@ -157,6 +158,7 @@ function Recommendations({ results, currentUser }) {
     axios(config)
       .then(function (response) {
         setFilms(response.data);
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error);
