@@ -18,11 +18,11 @@ const Login = ({ history }) => {
         signInWithEmailAndPassword(auth, email.value, password.value)
           .then((userCredential) => {
             // Signed in
-            const user = userCredential.user;
+            // const user = userCredential.user;
             alert("Sucessfully logged in!");
           })
           .catch((error) => {
-            const errorCode = error.code;
+            // const errorCode = error.code;
             const errorMessage = error.message;
             alert(errorMessage);
           });

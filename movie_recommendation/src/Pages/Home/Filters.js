@@ -1,6 +1,5 @@
-import FilterButton from "../../Components/FilterButton";
-import { Paper, Typography, Grid } from "@mui/material";
-import { MultiList, RangeSlider } from "@appbaseio/reactivesearch";
+import { Paper, Typography } from "@mui/material";
+import { MultiList } from "@appbaseio/reactivesearch";
 
 function Filters() {
   return (

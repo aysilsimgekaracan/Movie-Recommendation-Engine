@@ -198,7 +198,7 @@ function Recommendations({ results, currentUser }) {
   }, [currentUser, likedMovies]);
 
   useEffect(() => {
-    if (currentUser && likedGenres.length == 0) {
+    if (currentUser && likedGenres.length === 0) {
       loadRandomMovies();
     }
   }, [currentUser, likedGenres]);
@@ -213,7 +213,7 @@ function Recommendations({ results, currentUser }) {
           : "Random Movies"}
       </Typography>
       <div className="App-recommendation" style={styles.recommendationDiv}>
-        {films !== [] && films.hits != undefined
+        {films !== [] && films.hits !== undefined
           ? films.hits.hits.map((result) => {
               return (
                 <MovieCard

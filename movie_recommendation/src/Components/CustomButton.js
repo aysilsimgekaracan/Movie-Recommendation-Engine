@@ -10,7 +10,6 @@ let styles = {
   button: {
     textAlign: "left",
     marginRight: 10,
-    borderRadius: 10,
     borderWidth: 1,
     color: "white",
     fontSize: 15,
