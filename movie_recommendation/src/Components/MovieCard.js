@@ -97,7 +97,6 @@ function MovieCard({
       sx={[styles.mainCard, { width: width, minWidth: customMinHeight }]}
     >
       <div>
-        {/* <Button onClick={handleOpen}>Open modal</Button> */}
         <Modal
           open={open}
           onClose={handleClose}
@@ -153,11 +152,12 @@ function MovieCard({
       </div>
 
       <ButtonBase onClick={handleOpen}>
-        <div style={{ position: "relative" }}>
+        <Card style={{ maxWidth: 345 }}>
           <CardMedia
             component="img"
             src={"https://image.tmdb.org/t/p/w780" + movie.poster_path}
             width="100%"
+            height={width + 100}
           />
           <div style={styles.bottomBackground}>
             <Typography style={styles.text} variant="h7" gutterBottom>
@@ -171,7 +171,7 @@ function MovieCard({
               size="small"
             />
           </div>
-        </div>
+        </Card>
       </ButtonBase>
     </Card>
   );

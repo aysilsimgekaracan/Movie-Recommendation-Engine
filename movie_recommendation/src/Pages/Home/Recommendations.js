@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, Skeleton } from "@mui/material";
 import MovieCard from "../../Components/MovieCard";
 import { useEffect, useState } from "react";
 import { db } from "../../base";
@@ -219,19 +219,13 @@ function Recommendations({ results, currentUser }) {
                 <MovieCard
                   key={result._source.id}
                   movie={result._source}
-                  customMinHeight={260}
                   genres={result._source.genres}
                 />
               );
             })
-          : results.slice(0, 12).map((result) => {
+          : results.slice(0, 10).map((result) => {
               return (
-                <MovieCard
-                  key={result.id}
-                  movie={result}
-                  customMinHeight={260}
-                  genres={result.genres}
-                />
+                <Skeleton variant="rectangular" width={200} height={200} />
               );
             })}
       </div>

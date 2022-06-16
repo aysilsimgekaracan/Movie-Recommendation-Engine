@@ -121,33 +121,28 @@ function Statistic() {
         <div className="secondary-div">
           <h1>Welcome {currentUser.email},</h1>
           {likedGenres.length > 0 ? (
-            <div>
-              <div className="container">
-                <h2>Your Genre Taste</h2>
-                <PieChart
-                  data={genreData}
-                  viewBoxSize={[300, 300]}
-                  label={({ dataEntry }) =>
-                    dataEntry.percentage + "% " + dataEntry.title
-                  }
-                  labelStyle={{ fontSize: "5px" }}
-                  lineWidth={50}
-                  labelPosition={70}
-                  style={{ height: "100%" }}
-                />
-              </div>
+            <div className="statistics-div">
               <div className="container">
                 <h2>So far the number of movies you liked: </h2>
                 <AnimatedNumbers
                   animateToNumber={likedMovies.length}
                   fontStyle={{ fontSize: 32 }}
-                  configs={(number, index) => {
-                    return {
-                      mass: 1,
-                      tension: 230 * (index + 1),
-                      friction: 140,
-                    };
-                  }}
+                  configs={{ tension: 89, friction: 40 }}
+                  animationType={"calm"}
+                />
+              </div>
+              <div className="container" style={{ maxHeight: "600px" }}>
+                <h2>Your Genre Taste</h2>
+                <PieChart
+                  data={genreData}
+                  viewBoxSize={[300, 300]}
+                  label={({ dataEntry }) =>
+                    dataEntry.percentage.toFixed() + "% " + dataEntry.title
+                  }
+                  labelStyle={{ fontSize: "5px" }}
+                  lineWidth={50}
+                  labelPosition={70}
+                  style={{ height: "100%" }}
                 />
               </div>
               <div className="container">
