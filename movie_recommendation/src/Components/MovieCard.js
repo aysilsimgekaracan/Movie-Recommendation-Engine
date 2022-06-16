@@ -28,7 +28,6 @@ function MovieCard({
   genres = [],
 }) {
   const { currentUser } = useContext(AuthContext);
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

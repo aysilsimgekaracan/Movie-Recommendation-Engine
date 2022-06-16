@@ -198,10 +198,10 @@ function Recommendations({ results, currentUser }) {
   }, [currentUser, likedMovies]);
 
   useEffect(() => {
-    if (currentUser && likedMovies.length == 0) {
-      setLikedGenres([]);
+    if (currentUser && likedGenres.length == 0) {
+      loadRandomMovies();
     }
-  }, [likedMovies, currentUser, setLikedGenres]);
+  }, [currentUser, likedGenres]);
 
   return (
     <div style={{ width: maxWidth }}>
