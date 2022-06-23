@@ -178,10 +178,11 @@ function Recommendations({ results, currentUser }) {
       const unsubhandleListener = onSnapshot(
         doc(db, "users", currentUser.uid),
         (doc) => {
-          setLikedMovies(doc.data().likes);
-
-          if (!doc.data().likes) {
+          if (doc.data().likes.length === 0) {
             loadRandomMovies();
+            setLikedGenres([]);
+          } else {
+            setLikedMovies(doc.data().likes);
           }
         }
       );
@@ -197,11 +198,11 @@ function Recommendations({ results, currentUser }) {
     }
   }, [currentUser, likedMovies]);
 
-  useEffect(() => {
-    if (currentUser && likedGenres.length === 0) {
-      loadRandomMovies();
-    }
-  }, [currentUser, likedGenres]);
+  // useEffect(() => {
+  //   if (currentUser && likedGenres.length === 0) {
+  //     loadRandomMovies();
+  //   }
+  // }, [currentUser, likedGenres]);
 
   return (
     <div style={{ width: maxWidth }}>

@@ -14,7 +14,7 @@ const axios = require("axios").default;
 
 function UsersLikes({ currentUser }) {
   const [likedMovies, setLikedMovies] = useState([]);
-  const [movieNames, setMovieNames] = useState([]);
+  const [movieNames, setMovieNames] = useState({});
 
   // Get names of given move ids'
   const getMovieNames = () => {
@@ -48,10 +48,11 @@ function UsersLikes({ currentUser }) {
 
       axios(config)
         .then(function (response) {
-          var titles = [];
+          var titles = {};
           for (var i = 0; i < response.data.hits.hits.length; i++) {
-            let title = response.data.hits.hits[i]._source.original_title;
-            titles.push(title);
+            let title = response.data.hits.hits[i]._source.title;
+            let id = response.data.hits.hits[i]._source.id;
+            titles[id] = title;
           }
 
           setMovieNames(titles);
@@ -60,7 +61,7 @@ function UsersLikes({ currentUser }) {
           console.log(error);
         });
     } else {
-      setMovieNames([]);
+      setMovieNames({});
     }
   };
 
@@ -110,7 +111,7 @@ function UsersLikes({ currentUser }) {
       </Typography>
       <List sx={styles.list}>
         {currentUser ? (
-          likedMovies.length > 0 && movieNames.length > 0 ? (
+          likedMovies.length > 0 && movieNames !== {} ? (
             likedMovies.map((movieId) => {
               return (
                 <ListItem
@@ -126,7 +127,7 @@ function UsersLikes({ currentUser }) {
                 >
                   <ListItemText
                     sx={{ color: "white" }}
-                    primary={movieNames[likedMovies.indexOf(movieId)]}
+                    primary={movieNames[movieId]}
                   />
                 </ListItem>
               );
